@@ -1176,7 +1176,6 @@ samples_t_mcmc <- as.mcmc.list(samples_t)
 
 mean_coef_normal <- colMeans(as.matrix(samples_normal_mcmc))
 mean_coef_t <- colMeans(as.matrix(samples_t_mcmc))
-# Порівняння коефіцієнтів
 coef_data <- data.frame(
   Коэффициенты = c(mean_coef_normal, mean_coef_t),
   Модель = factor(rep(c("Нормальний розподіл", "t-розподіл"), each = length(mean_coef_normal))),
@@ -1185,7 +1184,7 @@ coef_data <- data.frame(
 
 library(ggplot2)
 
-ggplot(coef_data, aes(x = Параметр, y = Коэффициенты, fill = Модель)) +
+ggplot(coef_data, aes(x = Параметр, y = Коефіцієнт, fill = Модель)) +
   geom_bar(stat = "identity", position = "dodge") +
   theme_minimal() +
   labs(title = "Порівняння коефіцієнтів регресії", x = "Параметр", y = "Коефіцієнт")
