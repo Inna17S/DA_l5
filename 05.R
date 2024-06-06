@@ -1133,10 +1133,8 @@ abline(h = 0, col = "red")
 
 hist(residuals_normal, breaks = 30, 
      main = "Гістограма залишків (Нормальний розподіл)", 
-     xlab = "Передбачені значення", 
-     ylab = "Залишки", 
-     pch = 20, col = "blue")
-abline(h = 0, col = "red")
+     xlab = "Залишки", 
+     col = "lightblue", border = "black")
 
 
 
