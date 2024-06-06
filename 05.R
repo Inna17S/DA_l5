@@ -342,7 +342,7 @@ mean_coef_t <- colMeans(as.matrix(samples_t_mcmc))
 set.seed(123)
 
 # Вибір рядків з датасету
-filtered_data_3 <- filtered_data_3 %>% sample_n(10000)
+filtered_data_3 <- filtered_data_3 %>% sample_n()
 
 # str(filtered_data_3)
 
@@ -743,7 +743,7 @@ library(coda)
 library(rjags)
 
 # Вибір рядків з датасету
-filtered_data_3 <- filtered_data_3 %>% sample_n(10000)
+filtered_data_3 <- filtered_data_3 %>% sample_n()
 
 # Стандартизація змінних, які не є бінарними
 standardize <- function(x) {
@@ -1100,3 +1100,72 @@ ggplot(data.frame(real = data_list$Y, predicted = prior_predictive_means), aes(x
 
 # Збереження графіка
 ggsave("prior_predictive_checks.png")
+
+
+
+
+
+
+
+predicted_normal <- predicted_normal[1:length_Y]
+predicted_t <- predicted_t[1:length_Y]
+
+
+length_predicted_normal <- length(predicted_normal)
+length_predicted_t <- length(predicted_t)
+
+cat("Довжина predicted_normal після коригування:", length_predicted_normal, "\n")
+cat("Довжина predicted_t після коригування:", length_predicted_t, "\n")
+# Розрахунок залишків для обох моделей після коригування розмірів
+residuals_normal <- data_list$Y - predicted_normal
+residuals_t <- data_list$Y - predicted_t
+
+par(mfrow = c(2, 2))
+
+
+plot(predicted_normal, residuals_normal, 
+     main = "Залишки vs Передбачення (Нормальний розподіл)", 
+     xlab = "Передбачені значення", 
+     ylab = "Залишки", 
+     pch = 20, col = "blue")
+abline(h = 0, col = "red")
+
+
+hist(residuals_normal, breaks = 30, 
+     main = "Гістограма залишків (Нормальний розподіл)", 
+     xlab = "Передбачені значення", 
+     ylab = "Залишки", 
+     pch = 20, col = "blue")
+abline(h = 0, col = "red")
+
+
+
+par(mfrow = c(2, 2))
+
+
+plot(predicted_normal, residuals_normal, 
+     main = "Залишки vs Передбачення (Нормальний розподіл)", 
+     xlab = "Передбачені значення", 
+     ylab = "Залишки", 
+     pch = 20, col = "blue")
+abline(h = 0, col = "red")
+
+
+hist(residuals_normal, breaks = 30, 
+     main = "Гістограма залишків (Нормальний розподіл)", 
+     xlab = "Залишки", 
+     col = "lightblue", border = "black")
+
+
+plot(predicted_t, residuals_t, 
+     main = "Залишки vs Передбачення (t-розподіл)", 
+     xlab = "Передбачені значення", 
+     ylab = "Залишки", 
+     pch = 20, col = "blue")
+abline(h = 0, col = "red")
+
+# Гістограма залишків для t-розподілу
+hist(residuals_t, breaks = 30, 
+     main = "Гістограма залишків (t-розподіл)", 
+     xlab = "Залишки", 
+     col = "lightblue", border = "black")
