@@ -1167,3 +1167,25 @@ hist(residuals_t, breaks = 30,
      main = "Гістограма залишків (t-розподіл)", 
      xlab = "Залишки", 
      col = "lightblue", border = "black")
+
+
+
+samples_normal_mcmc <- as.mcmc.list(samples_normal)
+samples_t_mcmc <- as.mcmc.list(samples_t)
+
+
+mean_coef_normal <- colMeans(as.matrix(samples_normal_mcmc))
+mean_coef_t <- colMeans(as.matrix(samples_t_mcmc))
+# Порівняння коефіцієнтів
+coef_data <- data.frame(
+  Коэффициенты = c(mean_coef_normal, mean_coef_t),
+  Модель = factor(rep(c("Нормальний розподіл", "t-розподіл"), each = length(mean_coef_normal))),
+  Параметр = factor(rep(1:length(mean_coef_normal), times = 2))
+)
+
+library(ggplot2)
+
+ggplot(coef_data, aes(x = Параметр, y = Коэффициенты, fill = Модель)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  labs(title = "Порівняння коефіцієнтів регресії", x = "Параметр", y = "Коефіцієнт")
